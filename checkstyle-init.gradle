@@ -1,0 +1,12 @@
+initscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.puppycrawl.tools', name: 'checkstyle', version: '8.16'
+    }
+}
+
+allprojects {
+    apply plugin: 'checkstyle'
+}
