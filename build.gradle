@@ -1,3 +1,5 @@
+import java.nio.file.Files
+
 //buildscript {
 //    repositories {
 //        mavenCentral()
@@ -11,7 +13,7 @@ plugins {
     id 'java'
 }
 
-//apply plugin: 'checkstyle'
+apply plugin: 'checkstyle'
 
 group 'happylynx'
 version '1.0-SNAPSHOT'
@@ -25,6 +27,26 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+sourceSets {
+    custom {
+        // setting SourceDirectorySet type
+        // working since gradle 5
+//        java = getObjects().sourceDirectorySet("name", "desc")
+        java {
+            final java.nio.file.Path srcPath = rootDir.toPath().resolve('src/main/java/happylynx/gradlecheckstyledemo/root/Main.java')
+            final SourceDirectorySet sds = getObjects().sourceDirectorySet("name", "desc")
+            sds.srcDir(srcPath.getParent().toFile())
+            sds.filter { Files.isSameFile(it.toPath(), srcPath) }
+            source sds // adding a SourceDirectorySet
+            println sds.getFiles()
+        }
+    }
+}
+
+// run: gradlew checkstylecustom
+
+
 
 
 
